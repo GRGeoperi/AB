@@ -11,8 +11,9 @@ def f3(x):
     return np.log(x + 1)
 
 def optimizar(func, rango_min, rango_max, num_individuos, maximizar):
-    x = np.linspace(rango_min, rango_max, num_individuos)
-    x = np.round(x).astype(int)  # Asegurarse de que los valores sean enteros
+    individuos = np.random.randint(0, 2, (num_individuos, 4))
+    x = np.array([int("".join(map(str, ind)), 2) for ind in individuos])
+    x = np.clip(x, rango_min, rango_max)
     y = func(x)
     
     if maximizar:
@@ -53,7 +54,11 @@ def ejecutar_optimizacion():
     
     x, y, optimo_x, optimo = optimizar(func, rango_min, rango_max, num_individuos, maximizar)
     
-    plt.plot(x, y, 'bo-', label='Valores Evaluados')
+    indices_ordenados = np.argsort(x)
+    x_ordenado = x[indices_ordenados]
+    y_ordenado = y[indices_ordenados]
+    
+    plt.plot(x_ordenado, y_ordenado, 'b-', label='Valores Evaluados')
     plt.plot(optimo_x, optimo, 'ro', label='Óptimo')
     plt.xlabel('Valores Decimales')
     plt.ylabel('Valor de la Función')
@@ -78,4 +83,3 @@ funciones = [f1, f2, f3]
 
 if __name__ == "__main__":
     ejecutar_optimizacion()
-    
