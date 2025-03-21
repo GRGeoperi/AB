@@ -1,4 +1,3 @@
-
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -25,6 +24,9 @@ def optimizar(func, rango_min, rango_max, num_individuos, maximizar):
     
     return x, y, optimo_x, optimo
 
+def decimal_a_gray(n):
+    return n ^ (n >> 1)
+
 def ejecutar_optimizacion():
     print("Seleccione la función:")
     print("1. f(x) = x^2")
@@ -43,6 +45,12 @@ def ejecutar_optimizacion():
     opcion_optimizacion = int(input("Ingrese el número de la opción: "))
     maximizar = opcion_optimizacion == 1
     
+    print("Seleccione el tipo de representación:")
+    print("1. Binaria")
+    print("2. Gray")
+    opcion_representacion = int(input("Ingrese el número de la opción: "))
+    usar_gray = opcion_representacion == 2
+    
     x, y, optimo_x, optimo = optimizar(func, rango_min, rango_max, num_individuos, maximizar)
     
     plt.plot(x, y, 'bo-', label='Valores Evaluados')
@@ -55,16 +63,19 @@ def ejecutar_optimizacion():
     
     print(f"El mejor valor obtenido es:\nNúmero decimal: {optimo_x}\nResultado de la función: {optimo}")
     
-    print("No.\tDecimal\tBinario\tResultado")
+    print("No.\tDecimal\tRepresentación\tResultado")
     print("-" * 40)
     for i in range(num_individuos):
         decimal = x[i]
-        binario = format(decimal, '04b')
+        if usar_gray:
+            representacion = format(decimal_a_gray(decimal), '04b')
+        else:
+            representacion = format(decimal, '04b')
         resultado = y[i]
-        print(f"{i+1}\t{decimal}\t{binario}\t{resultado:.5f}")
+        print(f"{i+1}\t{decimal}\t{representacion}\t{resultado:.5f}")
 
 funciones = [f1, f2, f3]
 
-if __name__ == "_main_":
+if __name__ == "__main__":
     ejecutar_optimizacion()
     
